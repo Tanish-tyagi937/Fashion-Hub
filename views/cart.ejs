@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cart</title>
+    <link rel="stylesheet" href="project.css">
+</head>
+<body style="background-color:#eceaea;">
+    <%-include('common/header')%>
+    <h3 class="txt1">Uh-Oh! We Are <span class="col1">done🛒</span></h3>
+           <hr class="hr"><br><br>
+           <div class="cart_block">
+            <h2 class="col1">Your Cart</h2>
+            <hr class="hr1">
+            <br>
+            <div class="orderDetails">
+                <span>Sub Total:</span>______________<br><span><%=price%></span>
+                <span class="updatedtotal"><%=quantityPrice%></span>
+                <button class="buyOrder" id="rzp-button1">Proceed to buy</button>
+            </div>
+            <div id="productList">
+            <ul>
+                <%result.forEach(function(item){%>
+                <li>
+                    <div class="product"> 
+                        <button class="cross">X</button>
+                        <span ><img src="<%= item.src%>" class="cart_pr_img"></span>
+                        <div class="itemDetails">
+                            <span><%= item.name%></span><br>
+                            <span>quantity: <input type="number" placeholder="<%= item.quantity%>" value="<%= item.quantity%>" id="quantity" min="1" ></span>
+                            <br>Rs.<span><%= item.price%></span>
+                            <span class="updatedPrice"><%= item.price*item.quantity%></span>
+                        </div>
+                    </div>
+                </li>
+                <%})%>
+            </ul>
+        </div>
+            <br>
+            <br>
+            <small>"Can't see anything! Click & add your favourite fashion in "
+                <span class="col1">Shopping List!</span>
+            </small>
+           </div>
+           <br><br><br>
+        </div>
+        <script src="js/project.js"></script>
+        <script src="./js/cart.js"></script>
+        <!-- <script>
+            var data={};
+            function add(){  
+             fetch("/getCart").then((data)=>{
+                return data.json();
+                }).then((result)=>{
+                    data = result;
+                    console.log()
+                })
+            }
+        </script> -->
+        <script>document.querySelector('.orderCart').style.display="none";</script>
+
+
+
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+        
+        document.getElementById('rzp-button1').onclick = async function(e){
+            e.preventDefault();
+            var amount = e.target.parentElement.children[3].innerHTML
+            console.log(amount);
+            let response = await fetch('/payment',{
+                method:"POSt",
+                headers:{"content-type":"application/json"},
+                body:JSON.stringify({
+                    amount
+                })
+            })
+        
+        var orderData = await response.json();
+        console.log(orderData);
+            var options = {
+            "key": "rzp_test_bUU4KFxJb2bxmk",
+            "amount": amount*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "order_id": orderData.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            // "handler": function (response){
+            //     alert(response.razorpay_payment_id);
+            //     alert(response.razorpay_order_id);
+            //     alert(response.razorpay_signature)
+            // }, 
+        };
+        var rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+        </script>
+
+
+</body>
+</html>

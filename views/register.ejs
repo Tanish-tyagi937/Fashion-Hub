@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>register</title>
+    <link rel="stylesheet" href="project.css">
+</head>
+<body style=" background-image:linear-gradient(to right,rgba(2, 2, 2, 0.7),rgba(2, 2, 2, 0.7)),url(./images/3636.jpg);background-size: 100% 100%;">
+    <%-include('common/header')%>
+    <p class="message" id="flashmsg" style="margin-left: 30%;position: absolute;"><%= msg%></p>
+    <p id="vaild-pass" style="margin-left: 30%; color: #f84258;position: absolute;margin-top: 1%;"></p>
+    <h2 style="margin-top: 10%;position: relative;margin-left: 40%;color: aliceblue;">REGISTER HERE</h2>
+    <form action="/register" method="POST" class="register" enctype="multipart/form-data" >
+        <div class="left">
+            <input type="text" name="fname" id="fname" placeholder="First Name" style="color: black;font-weight: 900;" required>
+            <input type="text" name="lname" id="lname" placeholder="Last Name" style="color: black;font-weight: 900;" required>
+            <input type="text" name="email" id="Username" placeholder="Email Address" oninput="return validUserName()" style="color: black;font-weight: 900;" required>
+            <input type="text" name="phone" id="phone" placeholder="Phone Number" oninput="return validPhone()" style="color: black;font-weight: 900;" required>
+        </div>
+        <div class="right">
+            <input type="password" name="password" placeholder="password" oninput="return validPass()" id="pass" style="color: black;font-weight: 900;" required>
+            <input type="password" name="currentPassword" id="currentPassword" placeholder="current password" style="color: black;font-weight: 900;" required>
+            <input type="submit" name="submit" class="register" style="background-color: #f84258;color: white;font-weight: 900;color: rgba(0, 0, 0, 0.777);font-weight: 900;border: none;" required>
+        </div> 
+    </form>
+    <%-include('common/footer')%>
+    <script src="./js/login.js"></script>
+    <script>
+        function validPass() {
+            var vaildepass = document.getElementById("pass").value;
+            var minNumberofChars = 6;
+            var maxNumberofChars = 16;
+            var regularExpression = /^(?=.[0-9])(?=.[!@#$%^&])[a-zA-Z0-9!@#$%^&]{6,16}$/;
+            if (vaildepass.length <= minNumberofChars || vaildepass.length >= maxNumberofChars) {
+                document.getElementById("vaild-pass").innerHTML = "length must be between 6 to 16";
+                return false;
+            }
+            else if (!regularExpression.test(vaildepass)) {
+                document.getElementById("vaild-pass").innerHTML = "password should contain atleast on number and one special character";
+                return false;
+            }
+            else {
+                document.getElementById("vaild-pass").innerHTML = "";
+            }
+        }
+        function validUserName() {
+            var vaildUsername = document.getElementById("Username").value;
+            let regex = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+            let result = regex.test(vaildUsername);
+            if (!result) {
+                document.getElementById("vaild-pass").innerHTML = "Please enter valid email id";
+                return false;
+            }
+            else {
+                document.getElementById("vaild-pass").innerHTML = "";
+            }
+        }
+        function validPhone() {
+            var vaildPhone = document.getElementById("phone").value;
+            let regex =/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+            let result = regex.test(vaildPhone);
+            if (!result) {
+                document.getElementById("vaild-pass").innerHTML = "Please enter valid phone number,the format should be +91XXXXXXXXXX";
+                return false;
+            }
+            else {
+                document.getElementById("vaild-pass").innerHTML = "";
+            }
+        }
+    </script>
+    <script>
+    document.getElementById('login').style.color="white"
+    document.getElementById('header-register').style.color="#f84258"</script>
+    <script>setTimeout(()=>{
+        let flashmsg =  document.querySelector("#flashmsg")
+         flashmsg.style.display ="none"
+       },4000)</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="project.css">
+    <title>Contact Us</title>
+  </head>
+  <body>
+    <%- include('./common/header')%>
+    <div style="display: flex;">
+      <div class="mainContent">
+        <div class="main">"Fashion Hub"</div>
+        <div class="author">Tanish Tyagi</div>
+        <div class="email">tanish.tyagi@gmail.com</div>
+        <a href="https://www.linkedin.com/in/tanish-tyagi-961695288" id="linkid">Linked In</a>
+    </div>
+        <div id="grad1">
+            <div class="email1 ">
+            <p>Get in touch</p>
+            <%if(msg!=''){%>
+              <div style="width: 100%;color: #f84258;" id="flashmsg"><%=msg%></div>
+            <%}%>
+            <form action="/contactmail" method="post" style="  box-shadow: 1px 2px 6px 2px rgb(219, 219, 219);">
+                <label for="name">Name:</label><br>
+                <input type="text" name="name" id="name" placeholder="name" required><br>
+                <label for="Subject">Subject:</label><br>
+                <input type="text" name="subject" id="subject" placeholder="subject" required><br>
+                <label for="message">Message:</label><br>
+               <textarea name="message" id="meassage" rows="3" placeholder="message" required></textarea><br>
+               <input type="submit" name="submit" value="submit">
+                </form>
+            </div>
+        </div>
+      </div>
+    <%-include('common/footer')%>
+    <script src="./js/project.js"></script>
+    <script>setTimeout(()=>{
+      let flashmsg =  document.querySelector("#flashmsg")
+       flashmsg.style.display ="none"
+     },2000)</script>
+     <script>document.getElementById('contact').style.color="#f84258" </script>
+  </body>
+</html>
