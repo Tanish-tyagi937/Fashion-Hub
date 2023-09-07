@@ -15,7 +15,7 @@ const flash = require('connect-flash');
 const category = require('./views/mongoose/categories');
 // const sendSms = require('./sms');
 const Razorpay = require('razorpay');
-// const expressLayouts = require('express-ejs-layouts')
+// const expressLayouts = require('express-ejs-layouts')j
 const cors = require('cors')
 
 
@@ -69,7 +69,7 @@ app.post('/cart', async (req, res) => {
 
 
 app.get('/', (req, res) => {
-    res.render('login', { msg:req.flash('message')});
+    res.render('login', { msg:req.flash('msg')});
 })
 
 app.post('/', async (req, res) => {
@@ -99,7 +99,7 @@ app.post('/', async (req, res) => {
            }
        }
     } else {
-        req.flash('message','Invalid login details')
+        req.flash('msg','Invalid login details')
         res.redirect('/');
     }
 })
@@ -510,6 +510,89 @@ app.post('/payment',async (req,res)=>{
             })
         }
     });
+})
+
+
+// Forgot password
+
+app.get("/forgot",(req,res)=>{
+    res.render('forgot',{msg:req.flash('msg')});
+})
+var otp
+app.post("/forgot",async (req,res)=>{
+    req.session.email = req.body.email;
+    let result = await newuser.find({email:req.session.email});
+    otp = Math.floor(Math.random() * 9000 + 1000);
+    if(result){
+                let transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 587,
+                secure: false,
+                requireTLS: true,
+                auth:   {
+                            user: "tanish.tyagi98134@gmail.com",
+                            pass: 'tgmianrbqhqfawho'
+                        }
+                });
+                var mailOptions = {
+                from: 'tanish.tyagi98134@gmail.com',
+                to: req.body.email,
+                html: `<h3>Your verification code is ${otp}<h3>`,
+                subject: 'Reset Password'
+                };
+                transporter.sendMail(mailOptions, (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("sent");
+                }
+            })
+            req.flash("msg","Otp Sent successfully")
+        res.redirect('/otp');
+    }else{
+        req.flash("msg","Enter a valid Email");
+        res.redirect('forgot')
+    }
+    })
+app.get('/otp',(req,res)=>{
+    res.render("otp",{msg: req.flash('msg')});
+})
+var otpVerification
+app.post("/verify",(req,res)=>{
+    if(otp == req.body.otp){
+        otpVerification = "verified";
+    }else{
+        otpVerification="not verified";
+    }
+})
+app.get("/verify",(req,res)=>{
+    if(otpVerification=="verified"){
+        res.redirect('/reset')
+    }else{
+        req.flash("msg","Enter a correct otp");
+        res.redirect("otp")
+    }
+})
+app.get('/reset',(req,res)=>{
+    res.render('resetPassword',{msg:req.flash("msg")});
+})
+
+app.post("/changePassword",async (req,res)=>{
+    let password = req.body.password;
+    let confirm = req.body.confirmPassword;
+    if(password === confirm){
+        let pass = await bcrypt.hash(password,10);
+        let result = await newuser.updateOne({email:req.session.email},{
+            $set:{
+                password:pass
+            }
+        });
+        req.flash("msg","Password Changed Successfully");
+        res.redirect('/');
+    }else{
+        req.flash("msg","Password And Confirm Password Must be same")
+        res.redirect('/reset');
+    }
 })
 
 app.listen(5000, () => {

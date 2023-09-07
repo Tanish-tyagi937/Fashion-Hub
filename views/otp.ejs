@@ -1,0 +1,84 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width,
+					initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>OTP Input</title>
+	<link rel="stylesheet" href="project.css">
+	<style>
+		.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    height: 400px;
+    flex-direction: column;
+}
+
+.input {
+	width: 40px;
+	border: none;
+	border-bottom: 3px solid rgba(0, 0, 0, 0.5);
+	margin: 0 10px;
+	text-align: center;
+	font-size: 36px;
+    cursor: pointer;
+}
+
+.inputs:focus {
+	border-bottom: 3px solid orange;
+	outline: none;
+}
+
+	</style>
+</head>
+
+<body style=" background-image:linear-gradient(to right,rgba(2, 2, 2, 0.7),rgba(2, 2, 2, 0.7)),url(./images/3636.jpg);background-size: 100% 100%;">
+    <%-include("common/header")%>
+	<div class="container" style="background:transparent;">
+		<span style="font-weight: 900;font-size: large;color: #f84258;">Enter a Code Here</span><br>
+		<%if(msg!=''){%>
+			<span style="font-weight: 900;font-size: medium;color: #f84257a4; margin: 30px;" id="flashmsg" class="message"><%=msg%></span>
+			<%}%>
+		<form action="/verify" id="inputs" class="inputs">
+			<input class="input" type="text"  maxlength="1" />
+			<input class="input" type="text"  maxlength="1" />
+			<input class="input" type="text"  maxlength="1" />
+			<input class="input" type="text"  maxlength="1" />
+			<br><input type="submit" id="submit"  style="padding: 10px;width: 30%; margin: 30px;background-color: #f84258;color: white;font-weight: 900;border: none;">
+		</form>
+	</div>
+    <%-include("common/footer")%>
+	<script src="js/login.js"></script>
+	<script>setTimeout(() => {
+		let flashmsg = document.querySelector("#flashmsg")
+		flashmsg.style.display = "none"
+	}, 4000)</script>
+	<script>
+	document.querySelector("#submit").addEventListener("mouseover",(e)=>{
+		let otp = "";
+		for (let i = 0; i < 4; i++) {
+			otp = otp + e.target.parentElement.children[i].value;
+		}
+		otp = {otp:otp};
+		const body = JSON.stringify(otp);
+		fetch("/verify",{
+			method:"POST",
+			headers:{"content-type":"application/json"},
+			body
+		}).then((data)=>{
+			return data.text();
+		}).then((text)=>{
+			console.log(text);
+		}).catch((err)=>{
+			console.log(err);
+		})
+	})
+		
+	</script>
+</body>
+
+</html>

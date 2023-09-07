@@ -17,13 +17,9 @@
                 <%= msg %>
             </p>
             <%}%>
-                <form action='/' class="login-box" method="POST">
-                    <input type="text" placeholder="Username" name="Username" id="Username" style="color: black;font-weight: 900;"><br>
-                    <span id="vaild-userName" style="color:red"></span><br>
-                    <input type="password" name="password" id="password" placeholder="password" style="color: black;font-weight: 900;" required><br>
-                    <input type="submit" id="submit" value="Log In" >
-                    <button id="register"><a href="/register" style="text-decoration: none;">Register</a></button><br>
-                    <a href="/forgot" style="color: rgb(0, 179, 250); font-size: smaller;margin-left: 20px;">Forgot Password?</a>
+                <form action='/forgot' class="login-box" method="POST">
+                    <input type="text" placeholder="Enter you E-mail" name="email" id="Username" style="color: black;font-weight: 900;"><br>
+                    <input type="submit" id="submit" value="Submit" >
                 </form>
         </div>
                 <%-include('common/footer')%>
