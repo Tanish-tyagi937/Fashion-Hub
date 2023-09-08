@@ -582,7 +582,7 @@ app.post("/changePassword",async (req,res)=>{
     let confirm = req.body.confirmPassword;
     if(password === confirm){
         let pass = await bcrypt.hash(password,10);
-        let result = await newuser.updateOne({email:req.session.email},{
+        await newuser.updateOne({email:req.session.email},{
             $set:{
                 password:pass
             }
