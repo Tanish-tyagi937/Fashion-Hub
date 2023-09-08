@@ -11,7 +11,7 @@
 <body  style=" background-image:linear-gradient(to right,rgba(2, 2, 2, 0.7),rgba(2, 2, 2, 0.7)),url(./images/3636.jpg);background-size: 100% 100%;">
     <%-include('common/header')%>
         <div class="photos">
-        <p class="loginLabel">LOGIN HERE</p>
+        <p class="loginLabel" style="font-weight: 900;color: #f84258;">Enter Email</p>
         <%if(msg!=''){%>
             <p class="message" id="flashmsg" style="font-weight: 900;">
                 <%= msg %>
@@ -24,6 +24,7 @@
         </div>
                 <%-include('common/footer')%>
                     <script src="./js/login.js"></script>
+
 
                     <script>setTimeout(() => {
                             let flashmsg = document.querySelector("#flashmsg")
