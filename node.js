@@ -493,15 +493,14 @@ const instance = new Razorpay({
 app.get('/checkout',(req,res)=>{
     res.render('checkout');
 })
-
-var order ={};
+var orderdetail;
 app.post('/payment',async (req,res)=>{
     let {amount} = req.body;
     var options = {
         amount: amount *100,
         currency : 'INR'
     }
-    order = await instance.orders.create(options,(err,order)=>{
+    var order = await instance.orders.create(options,(err,order)=>{
         if(err){
             console.log(err);
         }else{
@@ -510,12 +509,11 @@ app.post('/payment',async (req,res)=>{
                 order,
                 amount,
             })  
+            orderdetail = order;
         } 
     });
     
 })
-
-console.log(order);
 app.post('/verification', (req, res)=>{
     const crypto = require('crypto')
     const secret_key = 'Vv_5VduhSCykD4K'
@@ -527,7 +525,7 @@ app.post('/verification', (req, res)=>{
             res.json({
                 status: 'ok'
             })
-            console.log(order);
+            console.log(orderdetail);
         } else {
             res.status(400).send('Invalid signature');
         }
