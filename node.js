@@ -524,8 +524,7 @@ app.post('/verification', (req, res)=>{
         data.update(JSON.stringify(req.body))
         const digest = data.digest('hex')
         if (digest === req.headers['x-razorpay-signature']) {
-            console.log('request is legit')
-            //we can store detail in db and send the response
+            console.log(data)
             res.json({
                 status: 'ok'
             })
