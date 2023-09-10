@@ -517,34 +517,22 @@ app.post('/payment',async (req,res)=>{
 
 //Inside app.js
 app.post('/verification', (req, res)=>{
-	
-	// STEP 7: Receive Payment Data
-	const {order_id, payment_id} = req.body;	
-	const razorpay_signature = req.headers['x-razorpay-signature'];
-
-	// Pass yours key_secret here
-	const key_secret = YAEUthsup8SijNs3iveeVlL1;	
-
-	// STEP 8: Verification & Send Response to User
-	
-	// Creating hmac object
-	let hmac = crypto.createHmac('sha256', key_secret);
-
-	// Passing the data to be hashed
-	hmac.update(order_id + "|" + payment_id);
-	
-	// Creating the hmac in the required format
-	const generated_signature = hmac.digest('hex');
-	
-	
-	if(razorpay_signature===generated_signature){
-		res.json({success:true, message:"Payment has been verified"})
-        
-	}
-	else
-	res.json({success:false, message:"Payment verification failed"})
-});
-
+    const crypto = require('crypto')
+    const secret_key = 'Vv_5VduhSCykD4K'
+        // do a validation
+        const data = crypto.createHmac('sha256', secret_key)
+        data.update(JSON.stringify(req.body))
+        const digest = data.digest('hex')
+        if (digest === req.headers['x-razorpay-signature']) {
+            console.log('request is legit')
+            //we can store detail in db and send the response
+            res.json({
+                status: 'ok'
+            })
+        } else {
+            res.status(400).send('Invalid signature');
+        }
+    })
 
 // Forgot password
 
