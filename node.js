@@ -15,9 +15,9 @@ const flash = require('connect-flash');
 const category = require('./views/mongoose/categories');
 // const sendSms = require('./sms');
 const Razorpay = require('razorpay');
-// const expressLayouts = require('express-ejs-layouts')j
+// const expressLayouts = require('express-ejs-layouts')
 const cors = require('cors')
-
+const orders = require('./views/mongoose/order');
 
 app.use(cors());
 // app.use(expressLayouts);
@@ -493,6 +493,7 @@ const instance = new Razorpay({
 app.get('/checkout',(req,res)=>{
     res.render('checkout');
 })
+var orderId;
 app.post('/payment',async (req,res)=>{
     let {amount} = req.body;
     var options = {
@@ -507,10 +508,42 @@ app.post('/payment',async (req,res)=>{
                 success:true,
                 order,
                 amount,
-            })
+            })  
         }
+       
     });
+    
 })
+
+//Inside app.js
+app.post('/verification', (req, res)=>{
+	
+	// STEP 7: Receive Payment Data
+	const {order_id, payment_id} = req.body;	
+	const razorpay_signature = req.headers['x-razorpay-signature'];
+
+	// Pass yours key_secret here
+	const key_secret = YAEUthsup8SijNs3iveeVlL1;	
+
+	// STEP 8: Verification & Send Response to User
+	
+	// Creating hmac object
+	let hmac = crypto.createHmac('sha256', key_secret);
+
+	// Passing the data to be hashed
+	hmac.update(order_id + "|" + payment_id);
+	
+	// Creating the hmac in the required format
+	const generated_signature = hmac.digest('hex');
+	
+	
+	if(razorpay_signature===generated_signature){
+		res.json({success:true, message:"Payment has been verified"})
+        
+	}
+	else
+	res.json({success:false, message:"Payment verification failed"})
+});
 
 
 // Forgot password
