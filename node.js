@@ -494,7 +494,7 @@ app.get('/checkout',(req,res)=>{
     res.render('checkout');
 })
 
-var order;
+var order ={};
 app.post('/payment',async (req,res)=>{
     let {amount} = req.body;
     var options = {
@@ -515,7 +515,7 @@ app.post('/payment',async (req,res)=>{
     
 })
 
-
+console.log(order);
 app.post('/verification', (req, res)=>{
     const crypto = require('crypto')
     const secret_key = 'Vv_5VduhSCykD4K'
