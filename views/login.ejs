@@ -8,12 +8,16 @@
     <link rel="stylesheet" href="./project.css">
 </head>
 
-<body  style=" background-image:linear-gradient(to right,rgba(2, 2, 2, 0.7),rgba(2, 2, 2, 0.7)),url(./images/3636.jpg);background-size: 100% 100%;">
+<body style="background-color: #f84257;background-image:linear-gradient(to right,#ff92a1,#f84257)">
     <%-include('common/header')%>
-        <div class="photos">
-        <p class="loginLabel">LOGIN HERE</p>
+    <div style="height: 360px;display: flex;background-color: white;width: 50%;margin: 10% 25%; box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;border-radius: 30px;">
+        <div style="padding: 0px;margin-bottom: 0;position: relative;">
+            <img src="./images/login.jpg" style="height: 360px;border-radius: 30px 0 0 30px;width: 80%;">
+        </div>
+        <div class="photos" style="width: 70%;">
+        <p class="loginLabel" style="color: #f84257 ;">LOGIN HERE</p>
         <%if(msg!=''){%>
-            <p class="message" id="flashmsg" style="font-weight: 900;">
+            <p class="message" id="flashmsg" style="font-weight: 900; margin-left: 0;">
                 <%= msg %>
             </p>
             <%}%>
@@ -26,9 +30,9 @@
                     <a href="/forgot" style="color: rgb(0, 179, 250); font-size: smaller;margin-left: 20px;">Forgot Password?</a>
                 </form>
         </div>
+    </div>
                 <%-include('common/footer')%>
                     <script src="./js/login.js"></script>
-
                     <script>setTimeout(() => {
                             let flashmsg = document.querySelector("#flashmsg")
                             flashmsg.style.display = "none"

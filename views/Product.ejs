@@ -30,12 +30,12 @@
                   <img src="images/slideimg4.png" style="width:100%">
                 </div>
                 </div> -->
-            <img class="img" src="images/product banner.jpg" style="width: 100%;margin-left:0px ;">
+            <img class="img" src="images/product banner.jpg" style="height: 550px ;margin-left:0px ;">
         </div>
             <div class="kurti">
                 <% result.forEach(function(product){%>
-                    <a href="/getdetail"><div id="img"><img src="<%= product.src %>" style="width: 80%;border-radius: 10px;height: 250px;"><br>
-                        <span><%= product.name%></span><br>
+                    <a href="/getdetail"><div id="img" style="height: 370px;background-color: rgba(128, 128, 128, 0.142);"><img src="<%= product.src %>" style="width: 80%;border-radius: 10px;height: 250px;"><br>
+                        <span style="font-size: small;font-weight: lighter;"><%= product.name%></span><br>
                         Rs.<span><%= product.price%></span><br>
                     </div></a> 
                 <%})%>   

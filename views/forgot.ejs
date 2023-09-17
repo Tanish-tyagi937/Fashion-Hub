@@ -8,17 +8,17 @@
     <link rel="stylesheet" href="./project.css">
 </head>
 
-<body  style=" background-image:linear-gradient(to right,rgba(2, 2, 2, 0.7),rgba(2, 2, 2, 0.7)),url(./images/3636.jpg);background-size: 100% 100%;">
+<body style="background-color: #f84258;">
     <%-include('common/header')%>
-        <div class="photos">
-        <p class="loginLabel" style="font-weight: 900;color: #f84258;">Enter Email</p>
+        <div class="forgotPass" style="box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px">
+        <p class="loginLabel" style="font-weight: 900;color: #f84258;margin-left: 0;">Enter Email</p>
         <%if(msg!=''){%>
-            <p class="message" id="flashmsg" style="font-weight: 900;">
+            <p class="message" id="flashmsg" style="font-weight: 900;margin-left: 0;">
                 <%= msg %>
             </p>
             <%}%>
-                <form action='/forgot' class="login-box" method="POST">
-                    <input type="text" placeholder="Enter you E-mail" name="email" id="Username" style="color: black;font-weight: 900;"><br>
+                <form action='/forgot' method="POST" class="login-box" style="margin-left: 10%;">
+                    <input type="text" placeholder="Enter your E-mail" name="email"  style="color: black;font-weight: 900;width: 70%;"><br>
                     <input type="submit" id="submit" value="Submit" >
                 </form>
         </div>

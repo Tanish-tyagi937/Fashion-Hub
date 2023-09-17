@@ -27,7 +27,7 @@ addToCart.forEach(function (product) {
             name: e.target.parentElement.children[0].innerText,
             price: e.target.parentElement.children[4].innerHTML
         }
-        console.log(data);
+        e.target.innerHTML="Added To Cart";
         // appendList(data);
         add(data);
     })

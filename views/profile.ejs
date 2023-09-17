@@ -42,31 +42,31 @@
           if (i === 0) {
             let profile = document.querySelector('.profile-name');
             let profileName = profile.innerHTML;
-            profile.innerHTML = `<input type="text" value=${profileName}>`
-            let phone = e.target.parentElement.children[3].children[0].innerHTML;
-            e.target.parentElement.children[3].innerHTML = `Phone : <input type="text" value="${phone}">`;
-            let email = e.target.parentElement.children[4].children[0].innerHTML;
-            e.target.parentElement.children[4].innerHTML = `Email : <input type="text" value="${email}">`
+            profile.innerHTML = `<input type="text" value="${profileName}" >`
+            let phone = e.target.parentElement.children[4].children[0].innerHTML;
+            e.target.parentElement.children[4].innerHTML = `Phone:<input type="text" value="${phone}">`;
+            let email = e.target.parentElement.children[5].children[0].innerHTML;
+            e.target.parentElement.children[5].innerHTML = `Email : <input type="text" value="${email}">`
             let button = document.createElement('button');
             button.classList.add("profileupdate")
             button.innerHTML = "Update";
             e.target.parentElement.append(button)
             i++;
             button.addEventListener("click", (e) => {
-              let updatedPhone = e.target.parentElement.children[3].children[0].value;
-              let updatedEmail = e.target.parentElement.children[4].children[0].value;
-              let updatedName = e.target.parentElement.children[2].children[0].value;
-              e.target.parentElement.children[2].innerHTML = `${updatedName}`;
-              e.target.parentElement.children[3].innerHTML = `Phone : <span id="phone">${updatedPhone}</span>`;
-              e.target.parentElement.children[4].innerHTML = `Email : <span id="email">${updatedEmail}</span>`
-              e.target.parentElement.removeChild(e.target.parentElement.children[5])
+              let updatedPhone = e.target.parentElement.children[4].children[0].value;
+              let updatedEmail = e.target.parentElement.children[5].children[0].value;
+              let updatedName = e.target.parentElement.children[3].children[0].value;
+              console.log(e.target.parentElement.children);
+              e.target.parentElement.children[3].innerHTML = `${updatedName}`;
+              e.target.parentElement.children[4].innerHTML = `Phone : <span id="phone">${updatedPhone}</span>`;
+              e.target.parentElement.children[5].innerHTML = `Email : <span id="email">${updatedEmail}</span>`
+              e.target.parentElement.removeChild(e.target.parentElement.children[6])
               i = 0;
               let name = document.querySelector('.profile-name').innerHTML
               let phoneNo = document.querySelector('#phone').innerHTML;
               let address = document.querySelector('.addressContainer');
               let detail = {name,phoneNo,address}
               const body = JSON.stringify(detail);
-              console.log(body);
               fetch('/updateProfile',{
                  method:"POST",
                 headers:{"content-type":"application/json"},

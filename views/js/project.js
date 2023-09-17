@@ -16,7 +16,7 @@ menu.append(logout)
 
 let span = document.createElement('span');
 span.classList.add("orderCart");
-span.innerHTML = `<a href="/cart"  onmouseout="out()"><i class="fa-solid fa-cart-shopping" style="color: white;"></i></a>`
+span.innerHTML = `<a href="/cart"  onmouseout="out()"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>`
 menu.append(span);
 
 
@@ -30,7 +30,7 @@ function hover() {
 // }
 
 function out() {
-    document.querySelector('.orderCart').innerHTML = `<a href="/cart"  onmouseover="hover()"><i class="fa-solid fa-cart-shopping" style="color: white;"></i></a>`
+    document.querySelector('.orderCart').innerHTML = `<a href="/cart"  onmouseover="hover()"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>`
 }
 
 

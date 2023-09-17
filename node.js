@@ -73,35 +73,40 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', async (req, res) => {
-    let username = req.body.Username;
-    let password = req.body.password;
-    let result = await newuser.findOne({ email: username });
-    let matchPass = await bcrypt.compare(password, result.password);
-    if (matchPass) {
-        if (username!="tyagitanish937@gmail.com") {
-            
-            sess = req.session;
-            sess.name = result.name;
-            sess.email = result.email;
-            if (req.session.email) {
-                res.render('home');
-            }
-        }
-       else{
-            sess = req.session;
-            sess.name = result.name;
-            sess.email = result.email;
-            if (req.session.email) {
-                res.redirect('/adminProduct');
+    try {
+        let username = req.body.Username;
+        let password = req.body.password;
+        let result = await newuser.findOne({ email: username });
+        let matchPass = await bcrypt.compare(password, result.password);
+        if (matchPass) {
+            if (username!="tyagitanish937@gmail.com") {
+                
+                sess = req.session;
+                sess.name = result.name;
+                sess.email = result.email;
+                if (req.session.email) {
+                    res.render('home');
+                }
             }
            else{
-            res.redirect('/');
+                sess = req.session;
+                sess.name = result.name;
+                sess.email = result.email;
+                if (req.session.email) {
+                    res.redirect('/adminProduct');
+                }
+               else{
+                res.redirect('/');
+               }
            }
-       }
-    } else {
-        req.flash('msg','Invalid login details')
-        res.redirect('/');
+        } else {
+            req.flash('msg','Invalid login details')
+            res.redirect('/');
+        }
+    } catch (error) {
+        console.log(error);
     }
+   
 })
 
 
@@ -161,7 +166,7 @@ app.post("/cros",async (req,res)=>{
     } catch (error) {
         console.log(error);
     }
-    
+
 })
 
 
@@ -517,7 +522,6 @@ app.post('/payment',async (req,res)=>{
 app.post('/verification', (req, res)=>{
     const crypto = require('crypto')
     const secret_key = 'Vv_5VduhSCykD4K'
-        // do a validation
         const data = crypto.createHmac('sha256', secret_key)
         data.update(JSON.stringify(req.body))
         const digest = data.digest('hex')
@@ -539,7 +543,8 @@ app.get("/forgot",(req,res)=>{
 var otp
 app.post("/forgot",async (req,res)=>{
     req.session.email = req.body.email;
-    let result = await newuser.find({email:req.session.email});
+    console.log(req.session.email);
+    let result = await newuser.findOne({email:req.session.email});
     otp = Math.floor(Math.random() * 9000 + 1000);
     if(result){
                 let transporter = nodemailer.createTransport({

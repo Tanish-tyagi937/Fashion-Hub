@@ -3,11 +3,11 @@
     <link rel="stylesheet" href="project.css">
     <body>
         <%-include('common/header')%>
-        <h1 class="cat">Unskippable Categories</h1>
+        <h1 class="cat" style="color: black;">Unskippable Categories</h1>
         <hr class="hr">
-        <img class="img" src="images/banner.jpg">
+        <img class="img" src="images/banner.jpg" style="height: 500px;">
         </a>
-        <h2 class="cat">TRENDING NOW</h2><br>
+        <h2 class="cat" style="color: black;">TRENDING NOW</h2><br>
         <div class="kurti">
           <% result.forEach((category)=>{%>
                 <a href="/findproduct"><img src="<%=category.src%>" onmouseover="show('<%=category.name%>')" style="margin-bottom: 40px; width: 280px;border-radius: 10px;height: 270px;"></a>          
