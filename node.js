@@ -74,39 +74,43 @@ app.get('/', (req, res) => {
 
 app.post('/', async (req, res) => {
     try {
-        let username = req.body.Username;
-        let password = req.body.password;
-        let result = await newuser.findOne({ email: username });
-        let matchPass = await bcrypt.compare(password, result.password);
-        if (matchPass) {
-            if (username!="tyagitanish937@gmail.com") {
-                
-                sess = req.session;
-                sess.name = result.name;
-                sess.email = result.email;
-                if (req.session.email) {
-                    res.render('home');
-                }
-            }
-           else{
-                sess = req.session;
-                sess.name = result.name;
-                sess.email = result.email;
-                if (req.session.email) {
-                    res.redirect('/adminProduct');
-                }
-               else{
-                res.redirect('/');
+            let username = req.body.Username;
+            let password = req.body.password;
+            let result = await newuser.findOne({ email: username });
+            if(result){
+                let matchPass = await bcrypt.compare(password, result.password);
+                if (matchPass) {
+                    if (username!="tyagitanish937@gmail.com") {
+                        sess = req.session;
+                        sess.name = result.name;
+                        sess.email = result.email;
+                        if (req.session.email) {
+                            res.render('home');
+                        }
+                    }
+                else{
+                    sess = req.session;
+                    sess.name = result.name;
+                    sess.email = result.email;
+                    if (req.session.email) {
+                        res.redirect('/adminProduct');
+                    }
+                   else{
+                    res.redirect('/');
+                   }
                }
-           }
-        } else {
+        }
+       else {
             req.flash('msg','Invalid login details')
             res.redirect('/');
-        }
-    } catch (error) {
-        console.log(error);
+       }
+    }else {
+        req.flash('msg','Invalid login details')
+        res.redirect('/');
+   }
+}catch (error) {
+    console.log(error);
     }
-   
 })
 
 
@@ -261,6 +265,33 @@ app.post('/addCategory',upload,async(req,res)=>{
     }
    
 })
+
+
+app.get('/users',async(req,res)=>{
+    if(req.session.email){
+        let result=await newuser.find();
+    res.render('users',{result});
+    }
+    else{
+        res.redirect('/');
+    }
+})
+
+app.post('/removeUser',async(req,res)=>{
+    try {
+        let userName=req.body.userName;
+        let result = await newuser.findOne({email:userName});
+        await newuser.findByIdAndDelete(result.id);
+
+    } catch (error) {
+        console.log(error);
+    }
+  
+    
+})
+
+
+
 //admin --> route for product removing request 
 
 app.post("/remove",async (req,res)=>{
@@ -498,6 +529,7 @@ const instance = new Razorpay({
 app.get('/checkout',(req,res)=>{
     res.render('checkout');
 })
+var order;
 var orderdetail;
 app.post('/payment',async (req,res)=>{
     let {amount} = req.body;
@@ -505,7 +537,7 @@ app.post('/payment',async (req,res)=>{
         amount: amount *100,
         currency : 'INR'
     }
-    var order = await instance.orders.create(options,(err,order)=>{
+    order = await instance.orders.create(options,(err,order)=>{
         if(err){
             console.log(err);
         }else{
@@ -514,7 +546,7 @@ app.post('/payment',async (req,res)=>{
                 order,
                 amount,
             })  
-            orderdetail = order;
+            orderdetail = order.id;
         } 
     });
     
@@ -529,7 +561,29 @@ app.post('/verification', (req, res)=>{
             res.json({
                 status: 'ok'
             })
-            console.log(orderdetail);
+            let transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 587,
+                secure: false,
+                requireTLS: true,
+                auth:   {
+                            user: "tanish.tyagi98134@gmail.com",
+                            pass: 'tgmianrbqhqfawho'
+                        }
+                });
+                var mailOptions = {
+                from: 'tanish.tyagi98134@gmail.com',
+                to: req.session.email,
+                html: `<h3>Your Order is confirmed<h3> <div>Your order id is ${orderdetail}</div>`,
+                subject: 'Reset Password'
+                };
+                transporter.sendMail(mailOptions, (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("sent");
+                }
+            })
         } else {
             res.status(400).send('Invalid signature');
         }
@@ -617,6 +671,8 @@ app.post("/changePassword",async (req,res)=>{
         res.redirect('/reset');
     }
 })
+
+
 
 app.listen(5000, () => {
     console.log("Listening on port 5000...");

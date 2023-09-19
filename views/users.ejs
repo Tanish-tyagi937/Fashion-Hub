@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cart</title>
+    <link rel="stylesheet" href="project.css">
+</head>
+<body style="background-color:#eceaea;">
+    <nav>
+        <span class="main-text">Fashion Hub</span>
+            <span class="menu">
+                <a href="/adminProduct" class="header" id="product">Prdoucts</a>
+                <a href="/addProduct" class="header" id="addProduct">ADD Products</a>
+                <a href="/addCategory" class="header" id="addCategory">ADD Category</a>
+                <a href="/users" class="header" id="addCategory">Users</a>
+                <a href="/logout" class="header">Log Out</a>
+            </span>
+        </nav>
+            <div id="productList">
+            <ul style="margin-top: 4%;width: 100%;grid-template-columns: repeat(2, 1fr);display: grid;">
+                <%result.forEach(function(item){%>
+                <li style="margin-left: 30%;">
+                    <div class="product" > 
+                        <div class="itemDetails" style="margin-top: 4%;">
+                            <span>Name: <%= item.fname%> <%=item.lname%></span><br>
+                            <span>Email: <%= item.email%></span>
+                            <br><span>Phone No.: <%= item.phoneNo%></span><br>
+                            <button id="remove-btn" style="margin-top: 20px;margin-left: 0px;padding: 5px;border: none;background-color: #f84257;">Remove User</button>
+                        </div>
+                    </div>
+                </li>
+                <%})%>
+            </ul>
+        </div>
+        <script>
+            var remove = document.querySelectorAll('#remove-btn')
+remove.forEach(function(cros){
+    cros.addEventListener("click",(e)=>{
+        let name = e.target.parentElement.children[2].innerText;
+        let userName ={ userName: name};
+        const body = JSON.stringify(userName);
+        fetch("/removeUser",{
+            method:"POSt",
+            headers:{"content-type":"application/json"},
+            body
+        }).then((data)=>{
+            return data.json();
+        }).then((json)=>{
+            console.log(json);
+        }).catch((err)=>{
+            console.log(err);
+        })
+       e.target.parentElement.parentElement.parentElement.style.display="none"
+    })
+})
+        </script>
+</body>
+</html>
